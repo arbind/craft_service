@@ -1,0 +1,1 @@
+json.craft_path api_v1_craft_path craft
