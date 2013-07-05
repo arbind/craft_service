@@ -11,7 +11,7 @@ REDIS_DB_ENVIRONMENTS = {
 
 # ensure ENV['RACK_ENV'] is set to 'test', 'development', or 'production 'in order to select a database for the running environment
 REDIS_URI = ENV["REDISTOGO_URL"] || ENV["REDIS_URL"] || "redis://localhost:6379/"
-REDIS_DB = REDIS_DB_ENVIRONMENTS[ ENV["RAILS_ENV"] ]
+REDIS_DB = REDIS_DB_ENVIRONMENTS[ (ENV["RAILS_ENV"] || :development) ]
 
 uri = URI.parse( REDIS_URI )
 

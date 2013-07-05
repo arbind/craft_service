@@ -1,7 +1,7 @@
 GIT
   remote: git://github.com/arbind/craftoid.git
-  revision: 15ba94f026566ac7555dac52cad4998374d32487
-  ref: 15ba94f026
+  revision: b21f06c73cdb215cb90ac9206d8241efbdbbfb6b
+  ref: b21f06c73c
   specs:
     craftoid (0.0.1)
 

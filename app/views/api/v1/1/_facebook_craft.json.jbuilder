@@ -1,0 +1,1 @@
+json.partial! 'api/v1/1/web_craft', web_craft: facebook_craft

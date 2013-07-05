@@ -1,6 +1,9 @@
 require "spec_helper"
+require "api/v1/context/craft"
 
 describe "/crafts", type: :request do
+  include_context 'json response'
+  include_context 'valid craft attributes'
   let!(:crafts)     { create_list :craft, 3 }
   let (:endpoint)   { api_v1_crafts_path }
 
@@ -9,12 +12,73 @@ describe "/crafts", type: :request do
     it_behaves_like "an array endpoint", :get, :craft
   end
 
+  context :POST do
+    let (:item)         { nil }
+    let (:payload)      {{ craft: craft_attributes }}
+    let!(:before_count)  { Craft.count }
+    it_behaves_like "an item endpoint", :post, :craft
+    before  { post endpoint, payload, nil }
+    specify { Craft.count.should eq before_count + 1 }
+    it 'has the right attributes' do
+      expect(json_data['search_tags']).to eq craft_base['search_tags']
+      expect(json_data['yelp_craft']['description']).to eq yelp_craft_base['description']
+      expect(json_data['twitter_craft']['description']).to eq twitter_craft_base['description']
+      expect(json_data['website_craft']['description']).to eq website_craft_base['description']
+      expect(json_data['facebook_craft']['description']).to eq facebook_craft_base['description']
+    end
+  end
+
   describe "/:id" do
+    let!(:item)   { create :craft, craft_attributes }
     let (:endpoint) { api_v1_craft_path(item) }
 
     context :GET do
-      let (:item)   { Craft.all.second }
       it_behaves_like "an item endpoint", :get, :craft
+      before  { get endpoint, nil, nil }
+      it 'has the right attributes' do
+        expect(json_data['search_tags']).to eq craft_base['search_tags']
+        expect(json_data['yelp_craft']['description']).to eq yelp_craft_base['description']
+        expect(json_data['twitter_craft']['description']).to eq twitter_craft_base['description']
+        expect(json_data['website_craft']['description']).to eq website_craft_base['description']
+        expect(json_data['facebook_craft']['description']).to eq facebook_craft_base['description']
+      end
+    end
+
+    context :PATCH do
+      include_context 'modified craft attributes'
+      let (:payload)      {{ craft: q_craft_attributes }}
+      let!(:before_count)  { Craft.count }
+      it_behaves_like "an item endpoint", :patch, :craft
+      before do
+        expect(item.search_tags).to eq craft_base['search_tags']
+        expect(item.twitter_craft.description).to eq twitter_craft_base['description']
+      end
+      before  { patch endpoint, payload, nil }
+      specify { Craft.count.should eq before_count }
+      it 'has the right attributes' do
+        expect(json_data['search_tags']).to eq q_craft_base['search_tags']
+        expect(json_data['yelp_craft']['description']).to eq q_yelp_craft_base['description']
+        expect(json_data['twitter_craft']['description']).to eq q_twitter_craft_base['description']
+        expect(json_data['website_craft']['description']).to eq q_website_craft_base['description']
+        expect(json_data['facebook_craft']['description']).to eq q_facebook_craft_base['description']
+      end
+      it 'updates the item' do
+        item.reload
+        expect(item.search_tags).to eq q_craft_base['search_tags']
+        expect(item.twitter_craft.description).to eq q_twitter_craft_base['description']
+      end
+    end
+
+    context :DELETE do
+      let!(:before_count)  { Craft.count }
+      before  do
+        expect(Craft.find item.id).to eq item
+      end
+      before  { delete endpoint, nil, nil }
+      specify { Craft.count.should eq before_count - 1 }
+      it 'deletes the item' do
+        expect{Craft.find item.id }.to raise_error Mongoid::Errors::DocumentNotFound
+      end
     end
   end
 end

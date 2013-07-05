@@ -1,0 +1,1 @@
+json.extract! web_craft, :web_craft_id, :username, :href, :name, :description
