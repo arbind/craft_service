@@ -13,19 +13,19 @@ class Api::V1::CraftsController < Api::V1::ApiController
   # POST /api/v1/crafts/:id
   def create
     @craft = Craft.create new_craft_params
-    render template: '/api/v1/crafts/show'
+    render template: '/api/v1/crafts/show', status: 201
   end
 
   # PATCH /api/v1/crafts/:id
   def update
     @craft.update_attributes updated_craft_params
-    render template: '/api/v1/crafts/show'
+    render template: '/api/v1/crafts/show', status: 200
   end
 
   # DELETE /api/v1/crafts/:id
   def destroy
     @craft.destroy
-    render template: '/api/v1/crafts/show', status: 205
+    render template: '/api/v1/crafts/show', status: 202
   end
 
   private
