@@ -1,5 +1,11 @@
 json.craft_path api_v1_craft_path craft
-json.extract! craft, :address, :is_mobile, :search_tags, :essence_tags, :theme_tags, :approved
+json.extract! craft, :approved, :rejected,
+  :is_mobile,
+  :coordinates,
+  :address,
+  :search_tags,
+  :essence_tags,
+  :theme_tags
 
 json.yelp_craft do
   json.partial! 'api/v1/1/yelp_craft', yelp_craft: craft.yelp_craft

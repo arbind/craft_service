@@ -28,7 +28,7 @@ shared_context 'valid craft attributes' do
     'description'=>'facebook-desc-1'
   }}
   let (:craft_base)          {{
-      "address"       => "",
+      "address"       => "3rd St. Promenade, Santa Monica, CA",
       "approved"      => true,
       "is_mobile"     => true,
       "search_tags"   => ['a', 'b'],
@@ -60,7 +60,7 @@ shared_context 'modified craft attributes' do
     'description'=>'facebook-desc-updated'
   }}
   let (:q_craft_base)          {{
-      "address"       => "",
+      "address"       => "Goa, India",
       "search_tags"   => ['a', 'b', 'updated search'],
       "essence_tags"  => ['e', 'f', 'updated essence'],
       "theme_tags"    => ['t', 'u', 'updated theme']

@@ -19,6 +19,11 @@ describe "/crafts", type: :request do
     it_behaves_like "an item endpoint", :post, :craft
     before  { post endpoint, payload, nil }
     specify { Craft.count.should eq before_count + 1 }
+    it 'has geo-coordinates' do
+      lng, lat = json_data['coordinates']
+      expect(lng).to be_within(2).of -118
+      expect(lat).to be_within(2).of 34
+    end
     it 'has the right attributes' do
       expect(json_data['search_tags']).to eq craft_base['search_tags']
       expect(json_data['yelp_craft']['description']).to eq yelp_craft_base['description']
@@ -55,7 +60,12 @@ describe "/crafts", type: :request do
       end
       before  { patch endpoint, payload, nil }
       specify { Craft.count.should eq before_count }
-      it 'has the right attributes' do
+      it 'updates geo-coordinates' do
+        lng, lat = json_data['coordinates']
+        expect(lng).to be_within(2).of 74
+        expect(lat).to be_within(2).of 15
+      end
+      it 'updates other attributes' do
         expect(json_data['search_tags']).to eq q_craft_base['search_tags']
         expect(json_data['yelp_craft']['description']).to eq q_yelp_craft_base['description']
         expect(json_data['twitter_craft']['description']).to eq q_twitter_craft_base['description']
@@ -65,7 +75,10 @@ describe "/crafts", type: :request do
       it 'updates the item' do
         item.reload
         expect(item.search_tags).to eq q_craft_base['search_tags']
+        expect(item.yelp_craft.description).to eq q_yelp_craft_base['description']
         expect(item.twitter_craft.description).to eq q_twitter_craft_base['description']
+        expect(item.website_craft.description).to eq q_website_craft_base['description']
+        expect(item.facebook_craft.description).to eq q_facebook_craft_base['description']
       end
     end
 
