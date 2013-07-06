@@ -33,6 +33,11 @@ describe "/crafts", type: :request do
     end
   end
 
+  it 'does not allow duplicate web craft id'
+  # it 'does not allow duplicate web craft id' do
+  #   expect(json_error).to eq 1
+  # end
+
   describe "/:id" do
     let!(:item)   { create :craft, craft_attributes }
     let (:endpoint) { api_v1_craft_path(item) }
