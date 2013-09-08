@@ -12,13 +12,13 @@ class Api::V1::CraftsController < Api::V1::ApiController
 
   # POST /api/v1/crafts/:id
   def create
-    @craft = Craft.create! new_craft_params
+    @craft = Craft.create! craft_params
     render template: '/api/v1/crafts/show', status: 201
   end
 
   # PATCH /api/v1/crafts/:id
   def update
-    @craft.update_attributes! updated_craft_params
+    @craft.update_attributes! craft_params
     render template: '/api/v1/crafts/show', status: 200
   end
 
@@ -38,15 +38,12 @@ class Api::V1::CraftsController < Api::V1::ApiController
     @craft = Craft.find(params[:id])
   end
 
-  def updated_craft_params
-    new_craft_params
+  def craft_params
+    params.require(:craft).permit(craft_param_list)
   end
 
-  def new_craft_params
-    params.require(:craft).permit(new_craft_param_list)
-  end
 
-  def new_craft_param_list
+  def craft_param_list
     [
       :address,
       :is_mobile,
