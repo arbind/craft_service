@@ -1,6 +1,20 @@
 require "spec_helper"
 require "api/v1/context/craft"
 
+describe "/materialize", type: :request do
+  context 'When the craft does not exist' do
+    it 'creates a new craft'
+  end
+  context 'When the craft already exists' do
+    context 'given a craft_path' do
+      it 'updates the craft via craft_path'
+    end
+    context 'given no craft_path' do
+      it 'updates the craft via twitter and yelp ids'
+    end
+  end
+end
+
 describe "/crafts", type: :request do
   include_context 'json response'
   include_context 'valid craft attributes'
@@ -46,6 +60,7 @@ describe "/crafts", type: :request do
       it_behaves_like "an item endpoint", :get, :craft
       before  { get endpoint, nil, nil }
       it 'has the right attributes' do
+        puts json_data
         expect(json_data['search_tags']).to eq craft_base['search_tags']
         expect(json_data['yelp_craft']['description']).to eq yelp_craft_base['description']
         expect(json_data['twitter_craft']['description']).to eq twitter_craft_base['description']
