@@ -6,7 +6,7 @@ CraftService::Application.routes.draw do
 
       post '/materialize', to: 'crafts#materialize', as: :materialize, defaults: { format: 'json' }
 
-      if show_crafts # disable viewing in production
+      if true or show_crafts # disable viewing in production
         resources :crafts, defaults: { format: 'json' }
       end
 
