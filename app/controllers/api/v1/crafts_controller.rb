@@ -55,18 +55,17 @@ class Api::V1::CraftsController < Api::V1::ApiController
     craft_id = craft_path.split('/').last
     @craft = Craft.find craft_id
     return @craft if @craft.present?
-    twitter_craft = craft_params['twitter_craft']
-    yelp_craft = craft_params['yelp_craft']
+    twitter_craft = craft_params['twitter']
+    yelp_craft = craft_params['yelp']
     return unless twitter_craft and yelp_craft
     twitter_id = twitter_craft['web_craft_id']
     yelp_id = yelp_craft['web_craft_id']
-    @craft = Craft.where('twitter_craft.web_craft_id' => twitter_id).and('yelp_craft.web_craft_id' => yelp_id).first
+    @craft = Craft.where('twitter.web_craft_id' => twitter_id).and('yelp.web_craft_id' => yelp_id).first
   end
 
   def craft_params
     @craft_params ||= params.require(:craft).permit(craft_param_list)
   end
-
 
   def craft_param_list
     [
@@ -77,10 +76,10 @@ class Api::V1::CraftsController < Api::V1::ApiController
       essence_tags: [],
       theme_tags: [],
       location_hash: location_hash_param_list,
-      yelp_craft: yelp_craft_param_list,
-      twitter_craft: twitter_craft_param_list,
-      website_craft: website_craft_param_list,
-      facebook_craft: facebook_craft_param_list
+      yelp: yelp_craft_param_list,
+      twitter: twitter_craft_param_list,
+      website: website_craft_param_list,
+      facebook: facebook_craft_param_list
     ]
   end
 

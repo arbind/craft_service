@@ -8,6 +8,9 @@
 | Rails 4
 | Jbuilder
 
+Don't forget to creat the database indexes
+heroku run rake db:mongoid:create_indexes
+
 ## Endpoints for /api/v1:
 
 ### &Xi; Access Token

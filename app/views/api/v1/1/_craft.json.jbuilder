@@ -1,24 +1,25 @@
 json.craft_path api_v1_craft_path craft
-json.extract! craft, :approved, :rejected,
-  :is_mobile,
+json.extract! craft,
+  :mobile,
   :coordinates,
   :address,
+  :location_hash,
   :search_tags,
   :essence_tags,
   :theme_tags
 
-json.yelp_craft do
-  json.partial! 'api/v1/1/yelp_craft', yelp_craft: craft.yelp_craft
-end if craft.yelp_craft
+json.yelp do
+  json.partial! 'api/v1/1/yelp_craft', yelp_craft: craft.yelp
+end if craft.yelp
 
-json.twitter_craft do
-  json.partial! 'api/v1/1/twitter_craft', twitter_craft: craft.twitter_craft
-end if craft.twitter_craft
+json.twitter do
+  json.partial! 'api/v1/1/twitter_craft', twitter_craft: craft.twitter
+end if craft.twitter
 
-json.website_craft do
-  json.partial! 'api/v1/1/website_craft', website_craft: craft.website_craft
-end if craft.website_craft
+json.website do
+  json.partial! 'api/v1/1/website_craft', website_craft: craft.website
+end if craft.website
 
-json.facebook_craft do
-  json.partial! 'api/v1/1/facebook_craft', facebook_craft: craft.facebook_craft
-end if craft.facebook_craft
+json.facebook do
+  json.partial! 'api/v1/1/facebook_craft', facebook_craft: craft.facebook
+end if craft.facebook

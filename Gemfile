@@ -10,7 +10,7 @@ gem 'redis'         , '~>3.0.4'
 gem 'mongoid'       , github: 'mongoid/mongoid', ref: '3b1ada6' # 4.0.0(master)
 
 gem 'geocoder'      , '~>1.1.8'
-gem 'craftoid'      , github: 'arbind/craftoid', ref: '11f3ff4bd7'
+gem 'craftoid'      , github: 'arbind/craftoid', ref: '7f4aa719ba'
 
 gem 'jbuilder'      , '~>1.0.2'
 

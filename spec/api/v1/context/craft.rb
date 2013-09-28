@@ -29,8 +29,7 @@ shared_context 'valid craft attributes' do
   }}
   let (:craft_base)          {{
       "address"       => "3rd St. Promenade, Santa Monica, CA",
-      "approved"      => true,
-      "is_mobile"     => true,
+      "mobile"     => true,
       "search_tags"   => ['a', 'b'],
       "essence_tags"  => ['e', 'f'],
       "theme_tags"    => ['t', 'u']
@@ -38,10 +37,10 @@ shared_context 'valid craft attributes' do
 
   let (:craft_attributes) {
     atts = {}.merge craft_base
-    atts["yelp_craft"] =     yelp_craft_base
-    atts["twitter_craft"] =  twitter_craft_base
-    atts["website_craft"] =  website_craft_base
-    atts["facebook_craft"] = facebook_craft_base
+    atts["yelp"] =     yelp_craft_base
+    atts["twitter"] =  twitter_craft_base
+    atts["website"] =  website_craft_base
+    atts["facebook"] = facebook_craft_base
     atts
   }
 end
@@ -68,10 +67,10 @@ shared_context 'modified craft attributes' do
 
   let (:q_craft_attributes) {
     atts = {}.merge q_craft_base
-    atts["yelp_craft"] =     q_yelp_craft_base
-    atts["twitter_craft"] =  q_twitter_craft_base
-    atts["website_craft"] =  q_website_craft_base
-    atts["facebook_craft"] = q_facebook_craft_base
+    atts["yelp"] =     q_yelp_craft_base
+    atts["twitter"] =  q_twitter_craft_base
+    atts["website"] =  q_website_craft_base
+    atts["facebook"] = q_facebook_craft_base
     atts
   }
 end
