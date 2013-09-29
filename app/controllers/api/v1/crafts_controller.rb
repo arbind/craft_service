@@ -3,14 +3,9 @@ class Api::V1::CraftsController < Api::V1::ApiController
   before_action :set_craft,  only: [:show, :update, :destroy]
   before_action :set_crafts, only: [:index]
 
-  # POST /materialize
+  # POST,PATCH /materialize
   def materialize
-    if @craft.nil?
-      @craft = Craft.create! craft_params
-    else
-      @craft.update_attributes! craft_params
-    end
-    render template: '/api/v1/crafts/show', status: 201
+    if @craft then update else create end
   end
 
   # GET /crafts
@@ -50,17 +45,8 @@ class Api::V1::CraftsController < Api::V1::ApiController
   end
 
   def set_craft_from_data
-    craft_path = craft_params['craft_path']
-    return nil unless craft_path
-    craft_id = craft_path.split('/').last
-    @craft = Craft.find craft_id
-    return @craft if @craft.present?
-    twitter_craft = craft_params['twitter']
-    yelp_craft = craft_params['yelp']
-    return unless twitter_craft and yelp_craft
-    twitter_id = twitter_craft['web_craft_id']
-    yelp_id = yelp_craft['web_craft_id']
-    @craft = Craft.where('twitter.web_craft_id' => twitter_id).and('yelp.web_craft_id' => yelp_id).first
+    craft_id = craft_params.delete('craft_path').to_s.split('/').last
+    @craft = Craft.find craft_id if craft_id
   end
 
   def craft_params
@@ -69,6 +55,7 @@ class Api::V1::CraftsController < Api::V1::ApiController
 
   def craft_param_list
     [
+      :craft_path,
       :address,
       :is_mobile,
       :approved,

@@ -2,24 +2,28 @@ require "spec_helper"
 require "api/v1/context/craft"
 
 describe "/materialize", type: :request do
+  include_context 'json response'
+  include_context 'valid craft attributes'
+  let (:endpoint)   { api_v1_materialize_path }
+
   context 'When the craft does not exist' do
-    it 'creates a new craft'
+    let (:item)         { nil }
+    let (:payload)      {{ craft: craft_attributes }}
+    let!(:before_count) { Craft.count }
+    it_behaves_like "an item endpoint", :post, :craft
+    before  { post endpoint, payload, nil }
+    specify { Craft.count.should eq before_count + 1 }
   end
   context 'When the craft already exists' do
-    context 'given a craft_path' do
-      it 'updates the craft via craft_path'
-    end
-    context 'given no craft_path' do
-      it 'updates the craft via twitter and yelp ids'
-    end
+    it_behaves_like 'it updates an existing craft'
   end
 end
 
 describe "/crafts", type: :request do
   include_context 'json response'
   include_context 'valid craft attributes'
-  let!(:crafts)     { create_list :craft, 3 }
-  let (:endpoint)   { api_v1_crafts_path }
+  let!(:crafts)   { create_list :craft, 3 }
+  let (:endpoint) { api_v1_crafts_path }
 
   context :GET do
     let (:list)     { crafts }
@@ -29,7 +33,7 @@ describe "/crafts", type: :request do
   context :POST do
     let (:item)         { nil }
     let (:payload)      {{ craft: craft_attributes }}
-    let!(:before_count)  { Craft.count }
+    let!(:before_count) { Craft.count }
     it_behaves_like "an item endpoint", :post, :craft
     before  { post endpoint, payload, nil }
     specify { Craft.count.should eq before_count + 1 }
@@ -47,13 +51,8 @@ describe "/crafts", type: :request do
     end
   end
 
-  it 'does not allow duplicate web craft id'
-  # it 'does not allow duplicate web craft id' do
-  #   expect(json_error).to eq 1
-  # end
-
   describe "/:id" do
-    let!(:item)   { create :craft, craft_attributes }
+    let!(:item)     { create :craft, craft_attributes }
     let (:endpoint) { api_v1_craft_path(item) }
 
     context :GET do
@@ -69,36 +68,7 @@ describe "/crafts", type: :request do
     end
 
     context :PATCH do
-      include_context 'modified craft attributes'
-      let (:payload)      {{ craft: q_craft_attributes }}
-      let!(:before_count)  { Craft.count }
-      it_behaves_like "an item endpoint", :patch, :craft
-      before do
-        expect(item.search_tags).to eq craft_base['search_tags']
-        expect(item.twitter.description).to eq twitter_craft_base['description']
-      end
-      before  { patch endpoint, payload, nil }
-      specify { Craft.count.should eq before_count }
-      it 'updates geo-coordinates' do
-        lng, lat = json_data['coordinates']
-        expect(lng).to be_within(2).of 74
-        expect(lat).to be_within(2).of 15
-      end
-      it 'updates other attributes' do
-        expect(json_data['search_tags']).to eq q_craft_base['search_tags']
-        expect(json_data['yelp']['description']).to eq q_yelp_craft_base['description']
-        expect(json_data['twitter']['description']).to eq q_twitter_craft_base['description']
-        expect(json_data['website']['description']).to eq q_website_craft_base['description']
-        expect(json_data['facebook']['description']).to eq q_facebook_craft_base['description']
-      end
-      it 'updates the item' do
-        item.reload
-        expect(item.search_tags).to eq q_craft_base['search_tags']
-        expect(item.yelp.description).to eq q_yelp_craft_base['description']
-        expect(item.twitter.description).to eq q_twitter_craft_base['description']
-        expect(item.website.description).to eq q_website_craft_base['description']
-        expect(item.facebook.description).to eq q_facebook_craft_base['description']
-      end
+      it_behaves_like 'it updates an existing craft'
     end
 
     context :DELETE do

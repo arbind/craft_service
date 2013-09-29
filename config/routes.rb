@@ -4,7 +4,8 @@ CraftService::Application.routes.draw do
   namespace :api do
     namespace :v1 do
 
-      post '/materialize', to: 'crafts#materialize', as: :materialize, defaults: { format: 'json' }
+      post  '/materialize', to: 'crafts#materialize', as: :materialize  , defaults: { format: 'json' }
+      patch '/materialize', to: 'crafts#materialize', as: :rematerialize, defaults: { format: 'json' }
 
       if true or show_crafts # disable viewing in production
         resources :crafts, defaults: { format: 'json' }
