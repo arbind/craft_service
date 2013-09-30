@@ -13,4 +13,7 @@ CraftService::Application.routes.draw do
 
     end
   end
+
+  get '/ping' => 'root#ping', as: :ping
+
 end
